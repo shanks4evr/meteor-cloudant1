@@ -1,7 +1,11 @@
-Tasks = new Mongo.Collection("tasks");
+Tasks = new CouchDB.Database("tasks");
 
 if (Meteor.isServer) {
   // This code only runs on the server
+  // CouchDB/Cloudant Query requires an index to use a selector other than _id.
+  // A index that starts with $or requires a text index
+  // so lets create a text index (needs Cloudant DBaas) on fields private & owner
+  Tasks._ensureIndex({ type:'text', index:{ fields:[{name: 'private', type: 'boolean'},{name: 'owner',type: 'string'}]}});
   // Only publish tasks that are public or belong to the current user
   Meteor.publish("tasks", function () {
     return Tasks.find({
@@ -21,10 +25,10 @@ if (Meteor.isClient) {
     tasks: function () {
       if (Session.get("hideCompleted")) {
         // If hide completed is checked, filter tasks
-        return Tasks.find({checked: {$ne: true}}, {sort: {createdAt: -1}});
+        return Tasks.find({checked: {$ne: true}}, {sort: {createdAt: 'desc'}});
       } else {
         // Otherwise, return all of the tasks
-        return Tasks.find({}, {sort: {createdAt: -1}});
+        return Tasks.find({}, {sort: {createdAt: 'desc'}});
       }
     },
     hideCompleted: function () {
@@ -84,13 +88,15 @@ Meteor.methods({
     if (! Meteor.userId()) {
       throw new Meteor.Error("not-authorized");
     }
-
+    
     Tasks.insert({
       text: text,
       createdAt: new Date(),
       owner: Meteor.userId(),
-      username: Meteor.user().username
-    });
+      username: Meteor.user().username,
+      private: false,
+     checked:false
+  });
   },
   deleteTask: function (taskId) {
     var task = Tasks.findOne(taskId);
@@ -108,7 +114,9 @@ Meteor.methods({
       throw new Meteor.Error("not-authorized");
     }
 
-    Tasks.update(taskId, { $set: { checked: setChecked} });
+    task.checked = setChecked;
+    Tasks.update(task);
+    
   },
   setPrivate: function (taskId, setToPrivate) {
     var task = Tasks.findOne(taskId);
@@ -117,7 +125,8 @@ Meteor.methods({
     if (task.owner !== Meteor.userId()) {
       throw new Meteor.Error("not-authorized");
     }
-
-    Tasks.update(taskId, { $set: { private: setToPrivate } });
+    
+    task.private = setToPrivate;
+    Tasks.update(task);
   }
 });
