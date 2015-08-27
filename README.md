@@ -14,11 +14,11 @@ You can follow the original tutorial if you are a meteor newbie and then apply t
 
 // clone this repo in a folder outside of the tutorial folder
 $ cd ..
-$ git clone https://github.rtp.raleigh.ibm.com/mabriggs-in/meteor-couchdb-samples.git
+$ git clone https://github.com/mariobriggs/simple-todos.git repo
 $ cd simple-todos
 
 // copy over the changes for couchdb
-$ cp -rf ../meteor-couchdb-samples/simple-todos/ .
+$ cp -rf ../repo/ .
 
 // install couchdb meteor module
 $ meteor add cloudant:couchdb
@@ -35,13 +35,13 @@ $ meteor run
 OR  directly use the source of this repo.
 ``` 
 // clone this repo
-$ git clone https://github.rtp.raleigh.ibm.com/mabriggs-in/meteor-couchdb-samples.git
+$ git clone https://github.com/mariobriggs/simple-todos.git repo
 
 //create the meteor app 
 $ meteor create simple-todos
 
 // copy over the changes for couchdb
-$ cp -rf ./meteor-couchdb-samples/simple-todos/ ./simple-todos
+$ cp -rf ./repo/ ./simple-todos
 
 // move into the app folder
 $ cd simple-todos
