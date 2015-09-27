@@ -35,13 +35,7 @@ $ meteor run
 OR  directly use the source of this repo.
 ``` 
 // clone this repo
-$ git clone https://github.com/mariobriggs/simple-todos.git repo
-
-//create the meteor app 
-$ meteor create simple-todos
-
-// copy over the changes for couchdb
-$ cp -rf ./repo/ ./simple-todos
+$ git clone https://github.com/mariobriggs/simple-todos.git 
 
 // move into the app folder
 $ cd simple-todos
@@ -51,13 +45,6 @@ $ meteor add cloudant:couchdb
 
 // point to your couchdb server
 $ export COUCHDB_URL=https://username:password@server:port
-
-// turn on  needed settings
-$ meteor add accounts-ui accounts-password
-
-$ meteor remove insecure
-
-$ meteor remove autopublish
 
 // run the app 
 $ meteor run 
