@@ -42,8 +42,8 @@ stages:
     type: deployer
     target:
       url: https://api.ng.bluemix.net
-      organization: mario.briggs@in.ibm.com
-      space: dev
+      organization: CF_ORGANIZATION
+      space: CF_SPACE
       application: articleDeploy
     script: "#!/bin/bash\ncf create-service cloudantNoSQLDB Shared cloudant-meteor\
       \ \ncf push \"${CF_APP}\"\n"
