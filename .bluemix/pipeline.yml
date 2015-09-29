@@ -31,6 +31,9 @@ stages:
       echo '    MONGO_URL: nope' >> output/manifest.yml\necho >> output/manifest.yml\n\
       \ncat output/manifest.yml "
 - name: deploy
+  env:
+    CF_ORGANIZATION: mario.briggs@in.ibm.com
+    CF_SPACE: dev
   inputs:
   - type: job
     stage: build
@@ -42,8 +45,8 @@ stages:
     type: deployer
     target:
       url: https://api.ng.bluemix.net
-      organization: CF_ORGANIZATION
-      space: CF_SPACE
+      organization: ${CF_ORGANIZATION}
+      space: ${CF_SPACE}
       application: articleDeploy
     script: "#!/bin/bash\ncf create-service cloudantNoSQLDB Shared cloudant-meteor\
       \ \ncf push \"${CF_APP}\"\n"
