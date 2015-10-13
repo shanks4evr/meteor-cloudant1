@@ -5,6 +5,7 @@ applications:
   name: meteor-cloudant-rocks
   description: This application demonstrates how to use the Cloudant with Meteor.
   memory: 512M
+  buildpack: https://github.com/cloudfoundry-community/cf-meteor-buildpack.git
   env:
     MONGO_URL: nope
 declared-services:

@@ -37,4 +37,4 @@ stages:
       organization: ${CF_ORGANIZATION}
       space: ${CF_SPACE}
       application: articleDeploy
-    script: "#!/bin/bash\ncf push \"${CF_APP}\" -b https://github.com/cloudfoundry-community/cf-meteor-buildpack.git\n"
+    script: "#!/bin/bash\ncf push \"${CF_APP}\"\n"
