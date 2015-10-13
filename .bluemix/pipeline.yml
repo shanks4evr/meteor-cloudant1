@@ -9,7 +9,6 @@ stages:
   jobs:
   - name: Build
     type: builder
-    artifact_dir: output
     build_type: shell
     script: "#!/bin/bash\n\n#Install meteor if its not installed\nhash meteor 2>/dev/null\
       \ || curl https://install.meteor.com | /bin/sh\n\n#Add ~/.meteor to the path\
@@ -19,17 +18,7 @@ stages:
       mv ./meteor-accounts-couchdb/packages/ .\nrm -rf meteor-accounts-couchdb/\n\
       #set package_dirs to pickup accounts-couchdb package\nexport PACKAGE_DIRS=./packages/\n\
       \n# add local accounts packages & cloudant:couchdb\nmeteor add accounts-password-couchdb\
-      \ accounts-password accounts-ui cloudant:couchdb\n\n# install demeteorizer npm\
-      \ module\nnpm install -g demeteorizer@2.3.1\n\n# run demeteorizer\ndemeteorizer\
-      \ -o output\n\n# generate a rand word to use in route in manifest file\nRAND=$(date\
-      \ +%s | sha256sum | base64 | head -c 6)\n\n#create manifest file\necho applications:\
-      \ >> output/manifest.yml\necho - services: >> output/manifest.yml\necho '  -\
-      \ cloudant-meteor' >> output/manifest.yml\necho '  name: mymeteor' >> output/manifest.yml\n\
-      echo \"  host: mymeteor-${RAND}\" >> output/manifest.yml\necho '  memory: 512M'\
-      \ >> output/manifest.yml\n\necho '  env:' >> output/manifest.yml\necho \"  \
-      \  ROOT_URL: https://mymeteor-${RAND}.mybluemix.net\" >> output/manifest.yml\n\
-      echo '    MONGO_URL: nope' >> output/manifest.yml\necho >> output/manifest.yml\n\
-      \ncat output/manifest.yml "
+      \ accounts-password accounts-ui cloudant:couchdb\n\n "
 - name: deploy
   env:
     CF_ORGANIZATION: mario.briggs@in.ibm.com
@@ -48,5 +37,4 @@ stages:
       organization: ${CF_ORGANIZATION}
       space: ${CF_SPACE}
       application: articleDeploy
-    script: "#!/bin/bash\ncf create-service cloudantNoSQLDB Shared cloudant-meteor\
-      \ \ncf push \"${CF_APP}\"\n"
+    script: "#!/bin/bash\ncf push \"${CF_APP}\" -b https://github.com/cloudfoundry-community/cf-meteor-buildpack.git\n"
