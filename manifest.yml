@@ -1,0 +1,13 @@
+applications:
+- services:
+  - meteor-cloudant
+  host: meteor-cloudant-rocks
+  name: meteor-cloudant-rocks
+  description: This application demonstrates how to use the Cloudant with Meteor.
+  memory: 512M
+  env:
+    MONGO_URL: nope
+declared-services:
+  meteor-cloudant:
+    label: cloudantNoSQLDB
+    plan:  Shared
