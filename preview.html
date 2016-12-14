@@ -1,0 +1,77 @@
+<template name="previewTemplate">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <ul class="nav navbar-nav">
+        <li><a href="#" style="color:white">Language : </a></li>
+        <li style="position:relative;top:5px">
+          <select class="form-control preview_lang_select" style="width:200px;background-color:transparent;color:white">
+            {{#each languageReturn}}
+              <option class="preview_lang_option" value="{{language}}" style="color:green">{{displayName}}</option>
+            {{/each}}
+          </select>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="panel panel-info" style="margin-top:100px">
+    {{#each pageReturn}}
+    <div class="panel-heading">{{name}}</div>
+    <div class="panel-body">
+      {{#each sectionReturn _id}}
+      <div class="well">{{name}}</div>
+        {{#each questionReturn _id}}
+          {{> Template.dynamic template=questionPreviewTemplateType}}
+          <br/>
+        {{/each}}
+      <br/>
+      {{/each}}
+    </div>
+    {{renderSavedData}}
+    {{/each}}
+  </div>
+</template>
+
+<template name="commentPreview">
+	<p><i><b>{{question}}</b></i></p>
+</template>
+
+<template name="mcqPreview">
+	<p>{{question}}</p>
+	{{#each options}}
+		<input type="radio" name="{{../_id}}" class="mcq_radio_button_preview" value="{{num}}"/>
+		{{value}}
+		<br/>
+	{{/each}}
+</template>
+
+<template name="maqPreview">
+	<p>{{question}}</p>
+	{{#each options}}
+		<input type="checkbox" name="{{../_id}}" class="maq_checkbox_button_preview" value="{{num}}"/>
+		{{value}}
+		<br/>
+	{{/each}}
+</template>
+
+<template name="timePreview">
+  <p>{{question}}</p>
+  {{#each options}}
+  <div class="input-group clockpicker">
+    <span class="input-group-addon">
+      <span class="glyphicon glyphicon-time"></span>
+    </span>
+    <input type="text" name="{{../_id}}:{{num}}" value="00:00" readonly class="form-control time" style="width:70px;height:30px"/>
+    <button type="button" class="btn btn-default" style="height:30px;margin-left:10px">
+      <span class="glyphicon glyphicon-info-sign"></span>
+    </button>
+    {{value}}
+  </div>
+  {{/each}}
+  <br/>
+</template>
+
+<template name="conditionalPreview">
+  {{#each getQuestions}}
+    {{> Template.dynamic template=getQuestionType}}
+  {{/each}}
+</template>

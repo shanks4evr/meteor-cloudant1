@@ -1,0 +1,15 @@
+.page_delete {
+  float: right;
+}
+.section_delete {
+  float: right;
+}
+.page_input_name {
+  max-width: 200px;
+}
+.section_input_name {
+  max-width: 200px;
+}
+.list-group-horizontal .list-group-item {
+    display: inline-block;
+}

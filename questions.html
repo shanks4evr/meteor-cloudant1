@@ -1,0 +1,231 @@
+<template name="commentInput">
+	<div class="well">
+		<ul class="list-inline">
+			<li class="list-inline-item">
+				<a href="#">Required</a>
+				<input type="checkbox" name="req_maq_input"/>
+			</li>
+		</ul>
+	</div>
+	<textarea rows="4" cols="100" style="max-width: 580px; max-height: 150px" name="{{_id}}" placeholder="Add comment here..." class="comment_input">{{question}}</textarea>
+	<br/>
+</template>
+
+<template name="timeInput">
+	<a href="#">Time Limit: </a><input type="text" class="question_time_limit" placeholder="Add time limit here..." name="{{_id}}" value="{{time}}"/>
+	<br/>
+	<textarea rows="4" cols="50" style="max-width: 580px; max-height: 150px" name="{{_id}}" placeholder="Add question here..." class="time_question_input">{{question}}</textarea>
+	<br/>
+	{{#each options}}
+    <ul class="list-inline">
+      <li class="list-inline-item">
+		    &rarr;
+      </li>
+      <li class="list-inline-item">
+		    <input type="text" class="time_input_option_text" placeholder="Add option here..." name="{{../_id}}:{{num}}" value="{{value}}"/>
+      </li>
+      <li class="list-inline-item">
+		    <input type="button" name="{{../_id}}:{{num}}:{{del_option}}" class="time_option_delete_button" value="X"/>
+      </li>
+		</ul>
+	{{/each}}
+	<input type="button" name="{{_id}}:time_add_option_button" class="time_add_option" value="Add option"/>
+</template>
+
+<template name="mcqInput">
+	<div class="well">
+		<ul class="list-inline">
+			<li class="list-inline-item">
+				<a href="#">Required</a>
+				<input type="checkbox" class="req_mcq_input" checked="{{isMcqRequiredChecked}}"/>
+			</li>
+		</ul>
+	</div>
+	<textarea rows="4" cols="50" style="max-width: 580px; max-height: 150px" name="{{_id}}" placeholder="Add question here..." class="mcq_question_input">{{question}}</textarea>
+	<br/>
+	{{#each options}}
+    <ul class="list-inline">
+      <li class="list-inline-item">
+		    <input type="radio" name="mcq_radio_button_input"/>
+      </li>
+      <li class="list-inline-item">
+		    <input type="text" class="mcq_input_option_text" placeholder="Add option here..." name="{{../_id}}:{{num}}" value="{{value}}"/>
+      </li>
+      <li class="list-inline-item">
+		    <input type="button" name="{{../_id}}:{{num}}:{{del_option}}" class="mcq_option_delete_button" value="X"/>
+      </li>
+      <li class="list-inline-item">
+        <div class="dropdown">
+          <button id="conditional_question_dropdown" type="button" class="btn btn-small btn-default dropdown-toggle" data-toggle="dropdown">Add conditional question<span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li><a herf="#" name="{{../_id}}:{{num}}" class="conditional_question_add_option" val="mcq">Multiple Choice Question</a></li>
+            <li><a href="#" name="{{../_id}}:{{num}}" class="conditional_question_add_option" val="maq">Multiple Answer Question</a></li>
+          </ul>
+        </div>
+      </li>
+		</ul>
+	{{/each}}
+	<input type="button" name="{{_id}}:mcq_add_option_button" class="mcq_add_option" value="Add option"/>
+	<br/>
+	<br/>
+	<br/>
+	{{> conditionalQuestionDisplay}}
+<br/>
+</template>
+
+<template name="maqInput">
+	<div class="well">
+		<ul class="list-inline">
+			<li class="list-inline-item">
+				<a href="#">Min:</a>
+				<select class="min_maq_input">
+				{{#each getMinLimit}}
+					<option value="{{num}}" selected="{{isMaqMinValueSelected num ../_id}}">{{num}}</option>
+				{{/each}}
+				</select>
+			</li>
+			<li class="list-inline-item">
+				<a href="#">Max:</a>
+				<select class="max_maq_input">
+				{{#each getMaxLimit}}
+					<option value="{{num}}" selected="{{isMaqMaxValueSelected num ../_id}}">{{num}}</option>
+				{{/each}}
+				</select>
+			</li>
+		</ul>
+	</div>
+	<textarea rows="4" cols="50" style="max-width: 580px; max-height: 150px" name="{{_id}}" placeholder="Add question here..." class="maq_question_input">{{question}}</textarea>
+	<br/>
+	{{#each options}}
+    <ul class="list-inline">
+      <li class="list-inline-item">
+		    <input type="checkbox" name="maq_radio_button_input"/>
+      </li>
+      <li class="list-inline-item">
+		    <input type="text" class="maq_input_option_text" placeholder="Add option here..." name="{{../_id}}:{{num}}" value="{{value}}"/>
+      </li>
+      <li class="list-inline-item">
+		    <input type="button" name="{{../_id}}:{{num}}:{{del_option}}" class="maq_option_delete_button" value="X"/>
+      </li>
+      <li class="list-inline-item">
+        <div class="dropdown">
+          <button id="conditional_question_dropdown" type="button" class="btn btn-small btn-default dropdown-toggle" data-toggle="dropdown">Add conditional question<span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li><a herf="#" name="{{../_id}}:{{num}}" class="conditional_question_add_option" val="mcq">Multiple Choice Question</a></li>
+            <li><a href="#" name="{{../_id}}:{{num}}" class="conditional_question_add_option" val="maq">Multiple Answer Question</a></li>
+          </ul>
+        </div>
+      </li>
+		</ul>
+	{{/each}}
+	<input type="button" name="{{_id}}:maq_add_option_button" class="maq_add_option" value="Add option"/>
+	<br/>
+	<br/>
+	<br/>
+	{{> conditionalQuestionDisplay}}
+<br/>
+</template>
+
+<template name="conditionalQuestionDisplay">
+	<div class="panel-group">
+ 		<div class="panel panel-default">
+	 		<div class="panel-heading">
+		 		<h4 class="panel-title">
+			 		<a class="conditional_question_collapse" val="{{_id}}">Conditional questions</a>
+		 		</h4>
+	 		</div>
+	 		<div class="panel-collapse collapse collapseConditionalPanel_{{_id}}">
+		 		<div class="panel-body">
+					{{#each conditionalQuestionReturn _id lang}}
+						<div class="panel panel-success">
+							<div class="panel-heading">
+								<ul class="list-inline">
+									<li class="list-inline-item">
+				            <button type="button" class='btn btn-info' data-toggle="collapse" data-target=".question_{{_id}}">+</button>
+				          </li>
+				          <li class="list-inline-item">
+				            <h4 class="bg-default">Option: {{getOptionText questionId optionNum lang}}  (Type: {{type}})</h4>
+				          </li>
+				          <li class="list-inline-item" style="float:right">
+				            <button type="button" class='btn btn-danger question_delete'>X</button>
+				          </li>
+				        </ul>
+							</div>
+							<div class="panel-collapse collapse in question_{{_id}}">
+						    <div class="panel-body">
+									{{> Template.dynamic template=conditionalQuestionTemplateType}}
+								</div>
+							</div>
+						</div>
+					{{/each}}
+	 		</div>
+ 		</div>
+	</div>
+</div>
+</template>
+
+<template name="mcqConditionalInput">
+	<div class="well">
+		<ul class="list-inline">
+			<li class="list-inline-item">
+				<a href="#">Required</a>
+				<input type="checkbox" name="req_mcq_input"/>
+			</li>
+		</ul>
+	</div>
+	<textarea rows="4" cols="50" style="max-width: 580px; max-height: 150px" name="{{_id}}" placeholder="Add question here..." class="mcq_conditional_question_input">{{question}}</textarea>
+	<br/>
+	{{#each options}}
+    <ul class="list-inline">
+      <li class="list-inline-item">
+		    <input type="radio" name="mcq_conditional_radio_button_input"/>
+      </li>
+      <li class="list-inline-item">
+		    <input type="text" class="mcq_conditional_input_option" placeholder="Add option here..." name="{{../_id}}:{{../lang}}:{{num}}" value="{{value}}"/>
+      </li>
+      <li class="list-inline-item">
+		    <input type="button" name="{{../_id}}:{{num}}:{{del_option}}" class="mcq_conditional_option_delete_button" value="X"/>
+      </li>
+		</ul>
+	{{/each}}
+	<input type="button" name="{{_id}}:mcq_add_option_button" class="mcq_conditional_add_option" value="Add option"/>
+</template>
+
+<template name="maqConditionalInput">
+	<div class="well">
+		<ul class="list-inline">
+			<li class="list-inline-item">
+				<a href="#">Min:</a>
+				<select class="min_maq_input">
+				{{#each getMinLimit}}
+					<option value="{{num}}">{{num}}</option>
+				{{/each}}
+				</select>
+			</li>
+			<li class="list-inline-item">
+				<a href="#">Max:</a>
+				<select class="max_maq_input">
+				{{#each getMaxLimit}}
+					<option value="{{num}}">{{num}}</option>
+				{{/each}}
+				</select>
+			</li>
+		</ul>
+	</div>
+	<textarea rows="4" cols="50" style="max-width: 580px; max-height: 150px" name="{{_id}}" placeholder="Add question here..." class="maq_conditional_question_input">{{question}}</textarea>
+	<br/>
+	{{#each options}}
+    <ul class="list-inline">
+      <li class="list-inline-item">
+		    <input type="checkbox" name="maq_radio_button_input"/>
+      </li>
+      <li class="list-inline-item">
+		    <input type="text" class="maq_conditional_input_option" placeholder="Add option here..." name="{{../_id}}:{{../lang}}:{{num}}" value="{{value}}"/>
+      </li>
+      <li class="list-inline-item">
+		    <input type="button" name="{{../_id}}:{{num}}:{{del_option}}" class="maq_conditional_option_delete_button" value="X"/>
+      </li>
+		</ul>
+	{{/each}}
+	<input type="button" name="{{_id}}:maq_add_option_button" class="maq_conditional_add_option" value="Add option"/>
+</template>

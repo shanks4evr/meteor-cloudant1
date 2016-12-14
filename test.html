@@ -1,0 +1,299 @@
+<template name="pageTemplate">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      {{> languageHeader}}
+    </div>
+    <div class="panel-body">
+    <div id="pages" class="panel-group">
+      {{#each pageReturn}}
+      <div class="panel panel-primary">
+        <div class="page_title panel-heading">
+          <ul class="list-inline">
+            <li class="list-inline-item">
+              <button type="button" class="btn btn-info page_min_button" data-toggle="collapse" data-target="#page_{{_id}}">+</button>
+            </li>
+            <li class="list-inline-item">
+              <input type="text" class="page_input_name form-control" name="{{_id}}" value="{{name}}" placeholder="Add Page Name..." />
+            </li>
+            <li class="list-inline-item" style="float:right">
+              <button type="button" class="btn btn-danger page_delete">X</button>
+            </li>
+          </ul>
+        </div>
+        <div id="page_{{_id}}" class="panel-collapse collapse in">
+          <div class="section panel-body">{{> sectionTemplate}}</div>
+          <div class="panel-footer">
+            {{> addSection}}
+          </div>
+        </div>
+      </div>
+      {{else}}
+      <h3>Nothing to display</h3>
+      {{/each}}
+    </div>
+    </div>
+    <div class="panel-footer">
+      {{> addPage}}
+    </div>
+  </div>
+</template>
+
+<template name="languageHeader">
+  <ul class="list-inline lang_header">
+    <li class="list-inline-item">
+      <button type="button" class="btn btn-info btn-lg add_lang_button" data-toggle="modal" data-target="#myModal">Add Language</button>
+      <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title" style="color:black">Add language</h4>
+            </div>
+            <div class="modal-body">
+                <div class="checkbox form-group">
+                  <label style="color:black"><input class="lang_add" type="checkbox" val="en" display="English" checked disabled>English</label>
+                </div>
+                <div class="checkbox form-group">
+                  <label style="color:black"><input class="lang_add" type="checkbox" display="French" val="fr">French</label>
+                </div>
+                <div class="checkbox form-group">
+                  <label style="color:black"><input class="lang_add" type="checkbox" display="Canadian" val="cn">Canandian</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary close_lang_add" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li class="list-inline-item">
+      <div class="dropdown">
+        <button id="language_dropdown" type="button" class="btn btn-info btn-lg dropdown-toggle disp_lang1_button" data-toggle="dropdown">Display Language 1<span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          {{#each languageReturn}}
+          <li><div class="radio"><label style="color:black"><input type="radio" name="display_lang_1" class="select_display_lang_1" value="{{language}}">{{displayName}}</label></div></li>
+          {{/each}}
+        </ul>
+      </div>
+    </li>
+    <li class="list-inline-item">
+      <div class="dropdown">
+        <button id="language_dropdown" type="button" class="btn btn-info btn-lg dropdown-toggle disp_lang2_button" data-toggle="dropdown">Display Language 2<span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          {{#if noneLanguageSelected}}
+          <li><div class="radio"><label style="color:black"><input type="radio" name="display_lang_2" class="select_display_lang_2" value="none" checked="checked">None</label></div></li>
+          {{else}}
+          <li><div class="radio"><label style="color:black"><input type="radio" name="display_lang_2" class="select_display_lang_2" value="none">None</label></div></li>
+          {{/if}}
+          {{#each languageReturn}}
+          <li><div class="radio"><label style="color:black"><input type="radio" name="display_lang_2" class="select_display_lang_2" value="{{language}}">{{displayName}}</label></div></li>
+          {{/each}}
+        </ul>
+      </div>
+    </li>
+  </ul>
+</template>
+
+<template name="addPage">
+  <button type="button" class="btn btn-primary add_page">Add Page</button>
+</template>
+
+<template name="addSection">
+  <div class="dropdown">
+    <button id="section_dropdown" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">Add section<span class="caret"></span></button>
+    <ul class="dropdown-menu">
+      <li><a herf="#" class="section_add_option" val="general">General</a></li>
+      <li><a href="#" class="section_add_option" val="timeProfile">Time Profile</a></li>
+    </ul>
+  </div>
+</template>
+
+<template name="addQuestion">
+  <div class="dropdown">
+    <button id="question_dropdown" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Add question<span class="caret"></span></button>
+    <ul class="dropdown-menu">
+      <li><a herf="#" class="question_add_option" val="mcq">Multiple Choice Question</a></li>
+      <li><a href="#" class="question_add_option" val="maq">Multiple Answer Question</a></li>
+      <li><a href="#" class="question_add_option" val="comment">Comment</a></li>
+    </ul>
+  </div>
+</template>
+
+<template name="addTimeQuestion">
+  <div class="dropdown">
+    <button id="question_dropdown" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Add question<span class="caret"></span></button>
+    <ul class="dropdown-menu">
+      <li><a herf="#" class="question_add_option" val="time">Time Profile Question</a></li>
+      <li><a href="#" class="question_add_option" val="comment">Comment</a></li>
+    </ul>
+  </div>
+</template>
+
+<template name="sectionTemplate">
+  <div id="sections" name="{{_id}}" class="sections_container panel-group">
+  {{#each sectionReturn _id}}
+    {{> Template.dynamic template=sectionTemplateType}}
+  {{else}}
+  <h3>No section to display</h3>
+  {{/each}}
+  </div>
+</template>
+
+<template name="generalInput">
+  <div class="panel panel-info">
+    <div class="section_title draggable panel-heading">
+      <ul class="list-inline">
+        <li class="list-inline-item">
+          <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#section_{{_id}}">+</button>
+        </li>
+        <li class="list-inline-item">
+          <input type="text" class="section_input_name form-control" name="{{_id}}" value="{{name}}" placeholder="Add Section Name..." />
+        </li>
+        <li class="list-inline-item" style="float:right">
+          <button type="button" class='btn btn-danger section_delete'>X</button>
+        </li>
+      </ul>
+    </div>
+    <div id="section_{{_id}}" class="panel-collapse collapse in">
+      <div class="question panel-body">{{> questionTemplate}}</div>
+      <div class="panel-footer">
+        {{> addQuestion}}
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="timeProfileInput">
+  <div class="panel panel-warning">
+    <div class="section_title draggable panel-heading">
+      <ul class="list-inline">
+        <li class="list-inline-item">
+          <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#section_{{_id}}">+</button>
+        </li>
+        <li class="list-inline-item">
+          <input type="text" class="section_input_name form-control" name="{{_id}}" value="{{name}}" placeholder="Add Section Name..." />
+        </li>
+        <li class="list-inline-item" style="float:right">
+          <button type="button" class='btn btn-danger section_delete'>X</button>
+        </li>
+      </ul>
+    </div>
+    <div id="section_{{_id}}" class="panel-collapse collapse in">
+      <div class="question panel-body">{{> timeQuestionTemplate}}</div>
+      <div class="panel-footer">
+        {{> addTimeQuestion}}
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="timeQuestionTemplate">
+  <div id="timeQuestions" name="{{_id}}">
+    {{#each questionReturn _id}}
+    <div class="panel panel-default">
+      <div class="question_title draggable panel-heading" data-id="{{_id}}">
+        <ul class="list-inline">
+          <li class="list-inline-item">
+            <button type="button" class='btn btn-info' data-toggle="collapse" data-target="#question_{{_id}}">+</button>
+          </li>
+          <li class="list-inline-item">
+            <h4 class="bg-default">{{type}}</h4>
+          </li>
+          <li class="list-inline-item" style="float:right">
+            <button type="button" class='btn btn-danger question_delete'>X</button>
+          </li>
+        </ul>
+      </div>
+      {{#if noneDisplaySelected}}
+        {{> singleQuestionView}}
+      {{else}}
+        {{> multipleQuestionView}}
+      {{/if}}
+    </div>
+    {{else}}
+      <h3>No question to display</h3>
+    {{/each}}
+  </div>
+</template>
+
+<template name="questionTemplate">
+  <div id="questions" name="{{_id}}" class="questions_container">
+    {{#each questionReturn _id}}
+    <div class="panel panel-default">
+      <div class="question_title draggable panel-heading" data-id="{{_id}}">
+        <ul class="list-inline">
+          <li class="list-inline-item">
+            <button type="button" class='btn btn-info' data-toggle="collapse" data-target="#question_{{_id}}">+</button>
+          </li>
+          <li class="list-inline-item">
+            <h4 class="bg-default">{{type}}</h4>
+          </li>
+          <li class="list-inline-item" style="float:right">
+            <button type="button" class='btn btn-danger question_delete'>X</button>
+          </li>
+        </ul>
+      </div>
+      {{#if noneDisplaySelected}}
+        {{> singleQuestionView}}
+      {{else}}
+        {{> multipleQuestionView}}
+      {{/if}}
+    </div>
+    {{else}}
+      <h3>No question to display</h3>
+    {{/each}}
+  </div>
+</template>
+
+<template name="singleQuestionView">
+  <div id="question_{{_id}}" class="panel-collapse collapse in">
+    <div class="question panel-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="panel panel-default">
+            {{#with getDispLang1}}
+            <div class="panel-heading">{{displayName}}</div>
+            {{/with}}
+            {{#with getQuestionWithLanguage1 _id}}
+            <div id="lang1_single" class="panel-body lang_ident">{{> Template.dynamic template=questionTemplateType}}</div>
+            {{/with}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="multipleQuestionView">
+  <div id="question_{{_id}}" class="panel-collapse collapse in">
+    <div class="question panel-body">
+      <div class="row">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              {{#with getDispLang1}}
+              <div class="panel-heading">{{displayName}}</div>
+              {{/with}}
+              {{#with getQuestionWithLanguage1 _id}}
+              <div id="lang1_multi" class="panel-body lang_ident">{{> Template.dynamic template=questionTemplateType}}</div>
+              {{/with}}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel panel-default">
+                {{#with getDispLang2}}
+                <div class="panel-heading">{{displayName}}</div>
+                {{/with}}
+                {{#with getQuestionWithLanguage2 _id}}
+                <div id="lang2_multi" class="panel-body lang_ident">{{> Template.dynamic template=questionTemplateType}}</div>
+                {{/with}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
